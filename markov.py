@@ -30,25 +30,16 @@ def make_chains(text_string):
 
     chains = {}
 
-    start = 0
-    stop = 1 
-    following = 2
-
-
     split_text = text_string.replace('\n',' ').split(' ')
-    for i in range(len(split_text)):
-        if following < (len(split_text)-1):
-            if (split_text[start], split_text[stop]) in chains: 
-                chains[(split_text[start], split_text[stop])].append(split_text[following])
-            else: 
-                chains[(split_text[start], split_text[stop])] = [split_text[following]]
-            start += 1 
-            stop += 1
-            following += 1
+    for i in range(len(split_text)-2):
+        if (split_text[i], split_text[i+1]) in chains: 
+            chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
+        else: 
+            chains[(split_text[i], split_text[i+1])] = [split_text[i+2]]
 
     # for first, second in chains.items():
     #     print first, second 
-        
+
     return chains
 
 file_path = open_and_read_file('green-eggs.txt')
