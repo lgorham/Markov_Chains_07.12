@@ -32,12 +32,16 @@ def make_chains(text_string):
 
     split_text = text_string.replace('\n',' ').split(' ')
     for i in range(len(split_text)-2):
-        if (split_text[i], split_text[i+1]) in chains: 
-            chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
+        # chains[(split_text[i], split_text[i+1])] = chains.get((split_text[i], split_text[i+1]), [])
+        # chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
+        word_pair = (split_text[i], split_text[i+1])
+        following_word = split_text[i+2]
+        if word_pair in chains: 
+            chains[word_pair].append(following_word)
         else: 
-            chains[(split_text[i], split_text[i+1])] = [split_text[i+2]]
+            chains[word_pair] = [following_word]
 
-    # for first, second in chains.items():
+    # # for first, second in chains.items():
     #     print first, second 
 
     return chains
