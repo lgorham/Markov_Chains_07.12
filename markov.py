@@ -46,18 +46,27 @@ def make_chains(text_string):
 
     return chains
 
-file_path = open_and_read_file('green-eggs.txt')
-print make_chains(file_path)
+# file_path = open_and_read_file('green-eggs.txt')
+# print make_chains(file_path)
 
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
 
     text = ""
+    current_key = choice(chains.keys())
+    text = current_key[0] + " " + current_key[1]
+    for i in range(40):
+        next_word = choice(chains[current_key])
+        text = text + " " + next_word
+        current_key = (current_key[1], next_word)
 
     # your code goes here
 
     return text
 
+file_path = open_and_read_file('gettysburg.txt')
+as_dict = make_chains(file_path)
+print make_text(as_dict)
 
 # input_path = "green-eggs.txt"
 
