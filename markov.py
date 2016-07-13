@@ -16,7 +16,7 @@ def open_and_read_file(file_path):
 
 
 
-def make_chains(text_string):
+def make_chains(text_string, n):
     """Takes input text as string; returns _dictionary_ of markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -32,23 +32,31 @@ def make_chains(text_string):
     chains = {}
 
     split_text = text_string.replace('\n',' ').split(' ')
-    for i in range(len(split_text)-2):
+    for i in range(len(split_text)-n):
         # chains[(split_text[i], split_text[i+1])] = chains.get((split_text[i], split_text[i+1]), [])
         # chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
-        word_pair = (split_text[i], split_text[i+1])
-        following_word = split_text[i+2]
-        if word_pair in chains: 
-            chains[word_pair].append(following_word)
-        else: 
-            chains[word_pair] = [following_word]
+        current_key_iteration = []
+        index_pos = i
+        while len(current_key_iteration) < n:
+            current_key_iteration.append(split_text[index_pos])
+            index_pos += 1
+        final_key = tuple(current_key_iteration)
 
-    # # for first, second in chains.items():
-    #     print first, second 
+        # word_pair = (split_text[i], split_text[i+1])
+        following_word = split_text[i+n]
+        # print "Final Key: ", final_key, "Next Word: ", following_word
+        if final_key in chains: 
+            chains[final_key].append(following_word)
+        else: 
+            chains[final_key] = [following_word]
+
+    # for key, value in chains.items():
+    #      print key, value 
 
     return chains
 
 # file_path = open_and_read_file('green-eggs.txt')
-# print make_chains(file_path)
+# print make_chains(file_path, 5)
 
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
@@ -65,9 +73,9 @@ def make_text(chains):
 
     return text
 
-file_path = open_and_read_file('green-eggs.txt')
-as_dict = make_chains(file_path)
-print make_text(as_dict)
+# file_path = open_and_read_file('green-eggs.txt')
+# as_dict = make_chains(file_path)
+# print make_text(as_dict)
 
 input_path = sys.argv[1]
 
@@ -75,7 +83,7 @@ input_path = sys.argv[1]
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_text, 3)
 
 # Produce random text
 random_text = make_text(chains)
