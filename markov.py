@@ -55,7 +55,7 @@ def make_text(chains):
     text = ""
     current_key = choice(chains.keys())
     text = current_key[0] + " " + current_key[1]
-    for i in range(40):
+    while current_key in chains.keys():
         next_word = choice(chains[current_key])
         text = text + " " + next_word
         current_key = (current_key[1], next_word)
@@ -64,7 +64,7 @@ def make_text(chains):
 
     return text
 
-file_path = open_and_read_file('gettysburg.txt')
+file_path = open_and_read_file('green-eggs.txt')
 as_dict = make_chains(file_path)
 print make_text(as_dict)
 
@@ -80,3 +80,6 @@ print make_text(as_dict)
 # random_text = make_text(chains)
 
 # print random_text
+
+
+
