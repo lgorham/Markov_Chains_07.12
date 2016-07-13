@@ -76,7 +76,7 @@ def make_text(chains, n):
             cap_keys.append(tup_key)
 
     current_key = choice(cap_keys)
-
+    
     text = ""
     for i in range(0, n):
         text += current_key[i] + " " 
@@ -88,11 +88,15 @@ def make_text(chains, n):
         adjusting_key = list(current_key)
         adjusting_key.append(next_word)
         current_key = tuple(adjusting_key[1:])
+    if text.endswith(punctuation):
+        return text
+    else:
+        shortened_string = re.compile('*\.$')
+        return shortened_string
         # print adjusting_key
         # print current_key
     # your code goes here
 
-    return text
 
 # file_path = open_and_read_file('green-eggs.txt')
 # as_dict = make_chains(file_path)
