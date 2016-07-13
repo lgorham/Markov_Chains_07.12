@@ -1,18 +1,24 @@
 from random import choice
 import sys 
+import re
 
 
-def open_and_read_file(file_path):
+def open_and_read_file(file_path1, file_path2):
     """Takes file path as string; returns text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
 
-    corpus_file = open(file_path, 'r')
-    corpus_data = corpus_file.read()
+    corpus_file1 = open(file_path1, 'r')
+    corpus_data1 = corpus_file1.read()
 
-    return corpus_data
+    corpus_file2 = open(file_path2, 'r')
+    corpus_data2 = corpus_file2.read()
+
+    combined_text = corpus_data1 + corpus_data2
+
+    return combined_text
 
 
 
@@ -31,7 +37,10 @@ def make_chains(text_string, n):
 
     chains = {}
 
-    split_text = text_string.replace('\n',' ').replace('  ', ' ').split(' ')
+    no_digits = re.sub(r'\n+\d+\.', ' ', text_string)
+    no_excess_spaces = re.sub(r'\s+', ' ', no_digits)
+    split_text = no_excess_spaces.replace('\n',' ').rstrip().split(' ')
+
     for i in range(len(split_text)-n):
         # chains[(split_text[i], split_text[i+1])] = chains.get((split_text[i], split_text[i+1]), [])
         # chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
@@ -72,7 +81,8 @@ def make_text(chains, n):
     for i in range(0, n):
         text += current_key[i] + " " 
 
-    while current_key in chains.keys():
+    # while current_key in chains.keys():
+    while len(text) < 140:
         next_word = choice(chains[current_key])
         text += " " + next_word
         adjusting_key = list(current_key)
@@ -88,12 +98,14 @@ def make_text(chains, n):
 # as_dict = make_chains(file_path)
 # print make_text(as_dict)
 
-input_path = sys.argv[1]
+first_text = sys.argv[1]
 
-n_gram = int(sys.argv[2])
+second_text = sys.argv[2]
+
+n_gram = int(sys.argv[3])
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = open_and_read_file(first_text, second_text)
 
 # Get a Markov chain
 chains = make_chains(input_text, n_gram)
