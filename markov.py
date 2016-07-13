@@ -58,17 +58,23 @@ def make_chains(text_string, n):
 # file_path = open_and_read_file('green-eggs.txt')
 # print make_chains(file_path, 5)
 
-def make_text(chains):
-    """Takes dictionary of markov chains; returns random text."""
+def make_text(chains, n):
+    """Takes dictionary of markov chains; returns random text.""" 
 
     current_key = choice(chains.keys())
-    text = current_key[0] + " " + current_key[1]
+
+    text = ""
+    for i in range(0, n):
+        text += current_key[i] + " " 
 
     while current_key in chains.keys():
         next_word = choice(chains[current_key])
         text += " " + next_word
-        current_key = (current_key[1], next_word)
-
+        adjusting_key = list(current_key)
+        adjusting_key.append(next_word)
+        current_key = tuple(adjusting_key[1:])
+        # print adjusting_key
+        # print current_key
     # your code goes here
 
     return text
@@ -79,14 +85,16 @@ def make_text(chains):
 
 input_path = sys.argv[1]
 
+n_gram = int(sys.argv[2])
+
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text, 3)
+chains = make_chains(input_text, n_gram)
 
 # Produce random text
-random_text = make_text(chains)
+random_text = make_text(chains, n_gram)
 
 print random_text
 
