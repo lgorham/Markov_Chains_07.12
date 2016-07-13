@@ -31,7 +31,7 @@ def make_chains(text_string, n):
 
     chains = {}
 
-    split_text = text_string.replace('\n',' ').split(' ')
+    split_text = text_string.replace('\n',' ').replace('  ', ' ').split(' ')
     for i in range(len(split_text)-n):
         # chains[(split_text[i], split_text[i+1])] = chains.get((split_text[i], split_text[i+1]), [])
         # chains[(split_text[i], split_text[i+1])].append(split_text[i+2])
@@ -61,7 +61,12 @@ def make_chains(text_string, n):
 def make_text(chains, n):
     """Takes dictionary of markov chains; returns random text.""" 
 
-    current_key = choice(chains.keys())
+    cap_keys = []
+    for tup_key in chains.keys():
+        if tup_key[0][0].isupper():
+            cap_keys.append(tup_key)
+
+    current_key = choice(cap_keys)
 
     text = ""
     for i in range(0, n):
