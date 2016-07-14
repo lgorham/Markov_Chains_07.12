@@ -76,7 +76,7 @@ def make_text(chains, n):
             cap_keys.append(tup_key)
 
     current_key = choice(cap_keys)
-    
+
     text = ""
     for i in range(0, n):
         text += current_key[i] + " " 
@@ -88,11 +88,10 @@ def make_text(chains, n):
         adjusting_key = list(current_key)
         adjusting_key.append(next_word)
         current_key = tuple(adjusting_key[1:])
-    if text.endswith(punctuation):
-        return text
-    else:
-        shortened_string = re.compile('*\.$')
-        return shortened_string
+
+    truncated_text = re.sub(r"""[.!?;"'][\sa-zA-Z_]+$""",'', text)
+
+    return truncated_text
         # print adjusting_key
         # print current_key
     # your code goes here
